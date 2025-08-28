@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1, user-scalable=1, minimum-scale=1, maximum-scale=5" name="viewport" />
+  <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Antique:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="./style.css">
+  <script src="https://unpkg.com/typeit@8.7.0/dist/index.umd.js"></script>
+
+  <!-- Update title and description for a birthday theme -->
+  <title>HBD 5.0 | Aoudumber Bade</title>
+  <link rel="icon" type="image/x-icon" href="https://www.palingit.com/favicon.ico" />
+  <meta name="description" content="A special birthday greeting" />
+</head>
+
+<body style="background: linear-gradient(to bottom, #ffe1e1, #ff217de0), url(./r.jpg); height: 100vh;">
+  <audio src="./y2mate (mp3cut.net).mp3" id="linkmp3" class="sembunyi"></audio>
+
+  <div id="bodyblur">
+    <!-- Wallpaper -->
+    <img src="" id="wallpaper" />
+  </div>
+
+  <div id="Content">
+    <div id="kadoIn">
+      <!-- Gift Button -->
+      <img src="./Valentine-Surprise.png" alt="Open Gift Button" />
+    </div>
+    <p id="ket">
+      <span style="font-style: bold; color: rgb(0,0,0); margin-top: 3px !important;"> Cutie, Tap the box 😁 </span>
+    </p>
+
+    <div class="kumpulanstiker" style="margin-top: 95px;">
+      <!-- Stickers for Content -->
+      <img src="https://media1.tenor.com/m/gt-AN_MFBeAAAAAC/cake-party.gif" id="fotostiker" />
+      <img src="https://media.tenor.com/63pQcc1eLjIAAAAi/spring-first-day-of-spring.gif" id="fotostiker1" />
+      <img src="https://media.tenor.com/qqj57YkIQIcAAAAi/pengu-pudgy.gif" id="fotostiker2" />
+      <img src="https://media1.tenor.com/m/5Ux5jcrpkHoAAAAC/a-peck-on-the-cheeks-pudgy-penguins.gif" id="fotostiker3" />
+      <img src="https://media1.tenor.com/m/uvIzfK8nEp8AAAAd/flower-flowers.gif" id="fotostiker4" />
+      <img src="https://media1.tenor.com/m/kIfTFGE3vOoAAAAC/love-u-i-love-u.gif" id="fotostiker5" />
+    </div>
+
+    <p id="halo" class="halo"></p>
+
+    <div>
+      <blockquote id="bq" data-text="">
+        <p id="kalimat">
+          It’s your World, Gorgeous. The rest of us are just lucky to be in it today.😜
+        </p>
+        <p id="pesan1">Ohh Wait Plz Tap all the Emojis for Nxt 🎉</p>
+        <div id="kolombaru">
+          <li id="lv1">🎂</li>
+          <li id="lv2">🎁</li>
+          <li id="lv3">🥳</li>
+          <li id="lv4">💖</li>
+        </div>
+
+        <p id="pesan2">You Shine Brighter Every Year! ✨</p>
+        <p id="pesan3">Do You know What Makes Today Extra Special?</p>
+        <p id="pesan4" class="sty2">It’s Your BIRTHDAY!</p>
+        <p id="pesan5" class="sty2">
+          Today, I Wish You a Year filled with Laughter, Love, and Unforgettable Moments.
+        </p>
+        <p id="pesan6" class="sty2">
+          Remember, You Deserve Every Happiness in the World. Celebrate Big and Enjoy Every Moment!❤️
+        </p>
+
+        <!-- Next Button -->
+        <p id="opsL"> 👉 Tap to Continue!</p>
+      </blockquote>
+    </div>
+
+    <!-- Rejected Message -->
+    <div id="pesanditolak">
+      <img id="stikerditolak" src="https://media.tenor.com/i1f0FzNpb2MAAAAi/x-do-not-want.gif" />
+      <p id="kataditolak">Oops! You Can’t Skip this Part 😝.</p>
+    </div>
+
+    <!-- 🎁 Next Page Button -->
+    <div id="Tombol">
+      <a href="#" id="By" onclick="goToSakhi()">&#128140; Next</a>
+    </div>
+  </div>
+
+  <script>
+    // main birthday script
+    const body = document.querySelector("body");
+    const swalst = Swal.mixin({
+      timer: 2300,
+      allowOutsideClick: false,
+      showConfirmButton: false,
+      timerProgressBar: true,
+      imageHeight: 90,
+    });
+    audio = new Audio("" + linkmp3.src);
+    ftganti = 0;
+    fungsi = 0;
+    fungsiAwal = 0;
+    deffotostiker = fotostiker.src;
+    Content.style = "opacity:1;margin-top:16vh";
+    const swals = Swal.mixin({
+      allowOutsideClick: false,
+      cancelButtonColor: "#FF0040",
+      imageHeight: 80,
+    });
+
+    document.getElementById("kadoIn").onclick = function () {
+      if (fungsiAwal == 0) {
+        audio.play();
+        fungsiAwal = 1;
+        kadoIn.style = "transition:all .8s ease;transform:scale(10);opacity:0";
+        wallpaper.style = "transform: scale(1.5);";
+        ket.style = "display:none";
+        setTimeout(initengahan, 300);
+        setTimeout(inipesan, 500);
+      }
+    };
+
+    async function inipesan() {
+      var { value: nama } = await swals.fire({
+        title: "What's your beautiful Name ?",
+        input: "text",
+      });
+      if (nama && nama.length < 11) {
+        window.nama = nama;
+        vketikhalo = "Happy Birthday, " + nama + "!";
+        mulainama();
+      } else {
+        await Swal.fire({
+          title: "Your Name is Lovely My Sakhi... ",
+          text: "So, Please enter Your Name 🤨",
+          icon: "warning",
+        });
+        inipesan();
+      }
+    }
+
+    var tanya = "I Have Something More to Show You would you like to see it?";
+    var opstanya = "Your choice is:";
+    var tompositif = "Yes! Absolutely 😁";
+    var tomnegatif = "Maybe Another Time";
+
+    async function pertanyaan() {
+      var { isConfirmed: prtanya } = await swals.fire({
+        title: nama + ", " + tanya,
+        text: "" + opstanya,
+        imageUrl: "" + fotostiker5.src,
+        showCancelButton: true,
+        confirmButtonText: "" + tompositif,
+        cancelButtonText: "" + tomnegatif,
+      });
+      if (prtanya) {
+        pesanwhatsapp = "Yes " + nama + ", Let The Birthday Magic Begin!";
+        menuju();
+      } else {
+        pesanwhatsapp = nama + ", Don't Miss Out on the Birthday Fun!";
+        await swalst.fire({
+          title: "" + kataditolak.innerHTML,
+          timer: 2000,
+          imageUrl: "" + stikerditolak.src,
+        });
+        menuju();
+      }
+    }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const loader = document.querySelector(".loader");
+    
+    // Jab loader dikh jaye, 3 sec ke baad agla page open hoga
+    setTimeout(() => {
+        loader.classList.add("fade-out");
+
+        // Animation end hone ke baad next page pe bhejo
+        loader.addEventListener("transitionend", () => {
+            window.location.href = "index1.html"; // apne 2nd page ka naam daalo
+        });
+    }, 3000);
+});
+</script>
+
+
+
+  <script src="a.js"></script>
+</body>
+</html>

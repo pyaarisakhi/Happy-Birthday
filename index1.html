@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Sakhi</title>
+  <link rel="shortcut icon" href="./icon.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --cell-w: clamp(220px, 26vw, 360px);
+      --cell-ratio: 1.45;
+      --radius-multiplier: 4.5;
+      --rotate-interval: 5000ms;
+    }
+    body{ margin:0; overflow:hidden; background:#ffe1e1; font-family:'Dancing Script', cursive; }
+    html,body{ height:100%; }
+    .bg-img{ background:url('./kitty.jpg') repeat; opacity:.20; position:fixed; inset:0; z-index:0; background-size:cover; }
+    .bg-overlay{ position:fixed; inset:0; z-index:1; opacity:.5;
+      background:linear-gradient(to bottom,#ffe1e1,#ff217de0); }
+    #center-text{
+      position:fixed; left:50%; top:65%; transform:translate(-50%,-50%);
+      font-size:clamp(44px, 8vw, 120px); font-weight:700; color:#ff0077;
+      text-shadow:0 0 10px #fff,0 0 20px #ff69b4,0 0 40px #ff1493;
+      z-index:20; pointer-events:none; opacity:1; transition:opacity 1s ease-in-out;
+    }
+    .scene{ position:relative; z-index:10; width:min(92vw, 1400px);
+      height:clamp(420px, 68vh, 820px); margin:0 auto; top:6vh; 
+      perspective:1400px; display:block;
+    }
+    .ground{ position:absolute; left:50%; top:75%;
+      width:min(1200px,70vw); height:60vh; transform:translate(-50%, -50%) rotateX(85deg);
+      background:radial-gradient(closest-side, rgba(255, 102, 153, .25), transparent 70%);
+      filter:blur(6px); z-index:2; pointer-events:none;
+    }
+    .carousel{ position:absolute; inset:0; margin:auto; width:100%; height:100%;
+      transform-style:preserve-3d; transition:transform 1s cubic-bezier(.22,.61,.36,1);
+      will-change:transform; z-index:5;
+    }
+    .cell{
+      position:absolute; left:50%; top:50%;
+      width:var(--cell-w); height:calc(var(--cell-w) * var(--cell-ratio));
+      transform-style:preserve-3d; border-radius:16px; overflow:hidden;
+      transform:translate(-50%,-50%);
+      box-shadow:0 18px 45px rgba(0,0,0,.28),0 4px 10px rgba(0,0,0,.18) inset;
+      background-size:cover; background-position:center;
+      border:2px solid rgba(255,255,255,.55);
+      transition:transform .95s ease, filter .6s ease, box-shadow .6s ease;
+      filter:saturate(1.05) contrast(1.02);
+    }
+    .cell.active{
+      transform:translate(-50%,-50%) scale(1.25) translateZ(60px);
+      z-index:1000;
+      box-shadow:0 28px 70px rgba(255, 0, 102, .45),
+                 0 18px 45px rgba(0,0,0,.45),
+                 0 0 0 3px rgba(255,255,255,.7) inset;
+      filter:saturate(1.12) contrast(1.06);
+    }
+    .sparkles{
+      position:fixed; inset:0; z-index:3; pointer-events:none;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,.35) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 60%, rgba(255,255,255,.35) 0 2px, transparent 3px),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,.35) 0 2px, transparent 3px);
+      background-size: 900px 900px, 1200px 1200px, 1500px 1500px;
+      animation: twinkle 9s linear infinite;
+    }
+    @keyframes twinkle{
+      0%{ background-position: 0 0, 0 0, 0 0; }
+      100%{ background-position: 900px 900px, -1200px 1200px, 1500px -1500px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-img"></div>
+  <div class="bg-overlay"></div>
+  <div class="sparkles"></div>
+
+  <p id="center-text">Sanju</p>
+
+  <section class="scene" id="scene">
+    <div class="ground"></div>
+    <div class="carousel" id="carousel">
+      <div class="cell" style="background-image:url('./images/r1.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r2.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r3.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r4.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r5.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r6.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r7.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r8.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r9.jpg')"></div>
+      <div class="cell" style="background-image:url('./images/r10.jpg')"></div>
+    </div>
+  </section>
+
+  <!-- Audio -->
+  <audio id="myAudio" loop>
+    <source src="music/setlove.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const carousel = document.getElementById('carousel');
+    const cells = Array.from(document.querySelectorAll('.cell'));
+    let index = 0, angleStep = 360 / cells.length, radius = 1200;
+    let timer;
+
+    function layout(){
+      const cellW = cells[0].offsetWidth;
+      radius = cellW * (parseFloat(getComputedStyle(document.documentElement)
+               .getPropertyValue('--radius-multiplier')) || 4.6);
+      cells.forEach((cell,i)=>{
+        const a = angleStep * i;
+        cell.style.transform = `translate(-50%,-50%) rotateY(${a}deg) translateZ(${radius}px)`;
+      });
+      rotate();
+    }
+
+    function rotate(){
+      const a = -angleStep * index;
+      carousel.style.transform = `translateZ(-${radius}px) rotateY(${a}deg)`;
+      cells.forEach(c => c.classList.remove('active'));
+      cells[((index % cells.length) + cells.length) % cells.length].classList.add('active');
+    }
+
+    function startAuto(){
+      clearInterval(timer);
+      timer = setInterval(()=>{ index++; rotate(); },
+        parseInt(getComputedStyle(document.documentElement)
+        .getPropertyValue('--rotate-interval')) || 2800);
+    }
+
+    window.addEventListener("load", ()=>{
+      layout();
+      startAuto();
+      document.getElementById("center-text").style.opacity="1";
+
+      // try to autoplay audio
+      const audio = document.getElementById("myAudio");
+      const playPromise = audio.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Agar block ho gaya to ek invisible click listener laga dete hain
+          const resumeAudio = () => {
+            audio.play();
+            document.removeEventListener("click", resumeAudio);
+          };
+          document.addEventListener("click", resumeAudio);
+        });
+      }
+    });
+
+    carousel.addEventListener('mouseenter', ()=> clearInterval(timer));
+    carousel.addEventListener('mouseleave', ()=> startAuto());
+
+    let startX=null;
+    carousel.addEventListener('pointerdown', e=>{
+      startX=e.clientX; carousel.setPointerCapture(e.pointerId); clearInterval(timer);
+    });
+    carousel.addEventListener('pointermove', e=>{
+      if(startX!==null){
+        const dx = e.clientX - startX;
+        if(Math.abs(dx) > 18){
+          index += dx>0 ? -1 : 1; startX = e.clientX; rotate();
+        }
+      }
+    });
+    window.addEventListener('pointerup', ()=>{ startX=null; startAuto(); });
+  </script>
+</body>
+</html>
