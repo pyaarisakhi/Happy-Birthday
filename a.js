@@ -239,7 +239,12 @@ function aktipesan6(){
     lifelike: true,
     afterComplete: function(){
       pesan6.innerHTML = vketik6;
-      setTimeout(tombol, 400);
+
+      // 👇 Yeh line add karo - Auto start confirmation swal
+      setTimeout(pertanyaan, 800); // delay so user can see last message
+
+      // ❌ Remove this if not using manual button
+      // setTimeout(tombol, 400);
     },
   }).go();
 }
